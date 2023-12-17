@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Role {
+    id    Int    @id @default(autoincrement())
+    name  String @unique
+    users User[]
+}
+
+model User {
+    id        String  @id @default(uuid())
+    email     String  @unique
+    password  String
+    firstName String?
+    lastName  String?
+    service   String?
+    role      Role    @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    roleId    Int
+    cars      Car[]
+    plannings Planning[]
+}
+
+model Car {
+    id              String  @id @default(uuid())
+    immatriculation String  @unique
+    brand           String
+    model           String
+    color           String
+    year            Int
+    price           Float
+    reference       String
+    kilometers      Float
+    motor           String
+    power           Int
+    isSold          Boolean @default(false)
+    user            User    @relation(fields: [userId], references: [id])
+    userId          String
+    images          Image[]
+}
+
+model Image {
+    id    String @id @default(uuid())
+    url   String
+    car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    carId String
+}
+
+model Mail {
+    id        String   @id @default(uuid())
+    firstname String
+    lastname  String
+    email     String
+    phone     String
+    date      DateTime @default(now())
+    subject   String
+    message   String
+    isRead    Boolean  @default(false)
+}
+
+model Planning {
+    id                   String @id @default(uuid())
+    day                  String
+    morningOpeningHour   String
+    morningClosingHour   String
+    afternoonOpeningHour String
+    afternoonClosingHour String
+    user                 User   @relation(fields: [userId], references: [id])
+    userId               String
+}
+
+model Comment {
+    id        String   @id @default(uuid())
+    firstname String
+    lastname  String
+    email     String
+    date      DateTime @default(now())
+    title   String
+    message   String
+    rating    Int
+    isValidated    Boolean  @default(false)
+}
