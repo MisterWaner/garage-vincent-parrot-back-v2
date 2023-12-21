@@ -13,12 +13,14 @@ app.use(express.json());
 
 /* Routes */
 import roleRouter from "./routers/role-router.js";
+import userRouter from "./routers/user-router.js";
 
 app.get("/", (req: Request, res: Response) => {
     res.send("API démarée et fonctionnelle");
 });
 
 app.use("/roles", roleRouter);
+app.use("/users", userRouter);
 
 /* Server */
 app.listen(port, () => {
