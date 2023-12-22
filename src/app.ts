@@ -14,6 +14,7 @@ app.use(express.json());
 /* Routes */
 import roleRouter from "./routers/role-router.js";
 import userRouter from "./routers/user-router.js";
+import authRouter from "./routers/auth-router.js";
 
 app.get("/", (req: Request, res: Response) => {
     res.send("API démarée et fonctionnelle");
@@ -21,6 +22,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/roles", roleRouter);
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 /* Server */
 app.listen(port, () => {
